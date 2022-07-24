@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mohamed-S-Zaina",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.2.0",
