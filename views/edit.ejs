@@ -1,0 +1,75 @@
+<% layout('./layouts/boilerplate') -%>
+
+<div class="row">
+  <div class="col-8 offset-2">
+    <form
+      action="/campground/<%=idEditCampground._id%>/edit?_method=PUT"
+      method="post"
+    >
+      <div class="mb-3">
+        <label for="title" class="form-label">title</label>
+        <input
+          class="form-control"
+          type="text"
+          id="title"
+          name="campground[title]"
+          value="<%= idEditCampground.title %>"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="location">location</label>
+        <input
+          class="form-control"
+          type="text"
+          id="location"
+          name="campground[location]"
+          value="<%= idEditCampground.location %>"
+        />
+      </div>
+      <label class="form-label" for="price">price</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input
+          class="form-control"
+          type="text"
+          id="price"
+          name="campground[price]"
+          value="<%= idEditCampground.price %>"
+          aria-label="Amount (to the nearest dollar)"
+        />
+        <span class="input-group-text">.00</span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="img">img</label>
+        <input
+          class="form-control"
+          type="text"
+          id="img"
+          name="campground[img]"
+          value="<%= idEditCampground.img %>"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="description">description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="campground[description]"
+          rows="3"
+        >
+<%= idEditCampground.description %></textarea
+        >
+      </div>
+      <button class="btn btn-info" type="submit">Update</button>
+    </form>
+    <form
+      class="d-inline"
+      action="/campground/<%= idEditCampground._id %>/delete?_method=DELETE"
+      method="post"
+    >
+      <button class="btn btn-danger">Delete</button>
+      <a href="/" class="btn btn-primary">Cancel</a>
+    </form>
+  </div>
+</div>
