@@ -1,7 +1,12 @@
 <% layout('./layouts/boilerplate') -%>
 <div class="row">
   <div class="col-8 offset-2">
-    <form action="/campground/new" method="post">
+    <form
+      action="/campground/new"
+      method="post"
+      class="needs-validation"
+      novalidate
+    >
       <div class="mb-3">
         <label for="title" class="form-label">title</label>
         <input
@@ -10,7 +15,10 @@
           id="title"
           name="campground[title]"
           placeholder="Enter title "
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please Enter the name of the place.</div>
       </div>
 
       <div class="mb-3">
@@ -21,7 +29,12 @@
           id="location"
           name="campground[location]"
           placeholder="Enter location"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please Enter a location for the place.
+        </div>
       </div>
       <label class="form-label" for="price">price</label>
       <div class="input-group mb-3">
@@ -33,8 +46,14 @@
           name="campground[price]"
           placeholder="Enter price"
           aria-label="Amount (to the nearest dollar)"
+          required
         />
+
         <span class="input-group-text">.00</span>
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please Enter how much the place cost per night.
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="img">img</label>
@@ -42,9 +61,15 @@
           class="form-control"
           type="text"
           id="img"
+          value="https://"
           name="campground[img]"
           placeholder="Enter img src"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please Enter an img that descrip the place.
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="description">description</label>
@@ -54,7 +79,12 @@
           name="campground[description]"
           placeholder="Enter description"
           rows="3"
+          required
         ></textarea>
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please Enter some details about the place.
+        </div>
       </div>
 
       <button class="btn btn-primary" type="submit">Save</button>

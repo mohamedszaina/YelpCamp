@@ -5,6 +5,9 @@ import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Campground } from "./models/campground.mjs";
+import { catchAsync } from "./utils/catchAsync.mjs";
+import { expressError } from "./utils/expressError.mjs";
+import { joiCampgroundSchema } from "./validateschema.mjs";
 //mongo connection
 mongoose
   .connect("mongodb://127.0.0.1:27017/yelp-camp")
@@ -34,6 +37,16 @@ app.use(express.json());
 app.use(methodOverride("_method"));
 // express.static();
 
+const validateCampground = (req, res, next) => {
+  const { error } = joiCampgroundSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new expressError(msg, 404);
+  } else {
+    next();
+  }
+};
+
 //the main rout
 app.get("/", (req, res) => {
   res.render("index", {
@@ -42,13 +55,16 @@ app.get("/", (req, res) => {
 });
 
 //find all campground
-app.get("/campground", async (req, res) => {
-  const campgrounds = await Campground.find({});
-  res.render("campground", {
-    title: "all campground",
-    campgrounds,
-  });
-});
+app.get(
+  "/campground",
+  catchAsync(async (req, res) => {
+    const campgrounds = await Campground.find({});
+    res.render("campground", {
+      title: "all campground",
+      campgrounds,
+    });
+  })
+);
 
 // create GET
 app.get("/campground/new", (req, res) => {
@@ -58,47 +74,65 @@ app.get("/campground/new", (req, res) => {
 });
 
 // create POST
-app.post("/campground/new", async (req, res) => {
-  const newCamp = new Campground(req.body.campground);
-  newCamp.save();
-  res.redirect(`/campground/${newCamp._id}`);
-});
+app.post(
+  "/campground/new",
+  validateCampground,
+  catchAsync(async (req, res, next) => {
+    const newCamp = new Campground(req.body.campground);
+    await newCamp.save();
+    res.redirect(`/campground/${newCamp._id}`);
+  })
+);
 
 //find by id
-app.get("/campground/:id", async (req, res) => {
-  const id = req.params.id;
-  const idCampground = await Campground.findById(id);
-  res.render("details", {
-    title: `${idCampground.location}`,
-    idCampground,
-  });
-});
+app.get(
+  "/campground/:id",
+  catchAsync(async (req, res) => {
+    const id = req.params.id;
+    const idCampground = await Campground.findById(id);
+    // res.json(idCampground);
+    res.render("details", {
+      title: `${idCampground.location}`,
+      idCampground,
+    });
+  })
+);
 
 //edit GET
-app.get("/campground/:id/edit", async (req, res) => {
-  const id = req.params.id;
-  const idEditCampground = await Campground.findById(id);
-  res.render("edit", {
-    title: `Edit ( ${idEditCampground.location} )`,
-    idEditCampground,
-  });
-});
+app.get(
+  "/campground/:id/edit",
+  catchAsync(async (req, res) => {
+    const id = req.params.id;
+    const idEditCampground = await Campground.findById(id);
+    res.render("edit", {
+      title: `Edit ( ${idEditCampground.location} )`,
+      idEditCampground,
+    });
+  })
+);
 
 //edit PUT
-app.put("/campground/:id/edit", async (req, res) => {
-  const id = req.params.id;
-  const idEditCampground = await Campground.findByIdAndUpdate(id, {
-    ...req.body.campground,
-  });
-  res.redirect(`/campground/${idEditCampground._id}`);
-});
+app.put(
+  "/campground/:id/edit",
+  validateCampground,
+  catchAsync(async (req, res) => {
+    const id = req.params.id;
+    const idEditCampground = await Campground.findByIdAndUpdate(id, {
+      ...req.body.campground,
+    });
+    res.redirect(`/campground/${idEditCampground._id}`);
+  })
+);
 
 //DELETE BY ID
-app.delete("/campground/:id/delete", async (req, res) => {
-  const id = req.params.id;
-  const idDeleteCampground = await Campground.findByIdAndDelete(id);
-  res.redirect("/campground");
-});
+app.delete(
+  "/campground/:id/delete",
+  catchAsync(async (req, res) => {
+    const id = req.params.id;
+    const idDeleteCampground = await Campground.findByIdAndDelete(id);
+    res.redirect("/campground");
+  })
+);
 
 //the main rout for testing
 // app.get("/camp", async (req, res) => {
@@ -108,13 +142,17 @@ app.delete("/campground/:id/delete", async (req, res) => {
 //     title: "camp",
 //   });
 // });
-
 //use error rout
-app.use((req, res, next) => {
-  res.status(404);
-  res.render("error", {
-    title: "404",
+app.all("*", (req, res, next) => {
+  next(new expressError("page not found", 404));
+});
+app.use((err, req, res, next) => {
+  const { statuscode = 500 } = err;
+  if (!err.message) err.message = "something went wrong!!!";
+  res.status(statuscode).render("error", {
+    title: "Error",
     pathinfo: req.path,
+    err,
   });
 });
 

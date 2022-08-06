@@ -1,4 +1,14 @@
 <% layout('./layouts/boilerplate') -%>
-<h1><%= title %> page</h1>
-<p><b> <%= pathinfo %></b> Page not found</p>
-<a class="btn btn-primary" href="/">Home Page</a>
+
+<div class="row">
+  <div class="col-6 offset-3">
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading"><%= err.message %></h4>
+      <p><b> <%= pathinfo %></b></p>
+      <hr />
+      <p class="mb-0"><%= err.stack %></p>
+      <a class="btn btn-primary" href="/">Home Page</a>
+    </div>
+  </div>
+</div>
+<h1></h1>

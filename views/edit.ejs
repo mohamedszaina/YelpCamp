@@ -5,6 +5,8 @@
     <form
       action="/campground/<%=idEditCampground._id%>/edit?_method=PUT"
       method="post"
+      class="needs-validation"
+      novalidate
     >
       <div class="mb-3">
         <label for="title" class="form-label">title</label>
@@ -14,7 +16,10 @@
           id="title"
           name="campground[title]"
           value="<%= idEditCampground.title %>"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please Enter the name of the place.</div>
       </div>
 
       <div class="mb-3">
@@ -25,7 +30,12 @@
           id="location"
           name="campground[location]"
           value="<%= idEditCampground.location %>"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please Enter a location for the place.
+        </div>
       </div>
       <label class="form-label" for="price">price</label>
       <div class="input-group mb-3">
@@ -37,8 +47,13 @@
           name="campground[price]"
           value="<%= idEditCampground.price %>"
           aria-label="Amount (to the nearest dollar)"
+          required
         />
         <span class="input-group-text">.00</span>
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please Enter how much the place cost per night.
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="img">img</label>
@@ -47,8 +62,13 @@
           type="text"
           id="img"
           name="campground[img]"
-          value="<%= idEditCampground.img %>"
+          value="https://<%= idEditCampground.img %>"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please Enter an img that descrip the place.
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="description">description</label>
@@ -57,9 +77,14 @@
           id="description"
           name="campground[description]"
           rows="3"
+          required
         >
 <%= idEditCampground.description %></textarea
         >
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please Enter some details about the place.
+        </div>
       </div>
       <button class="btn btn-info" type="submit">Update</button>
     </form>
