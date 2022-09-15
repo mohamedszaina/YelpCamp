@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Review } from "./review.mjs";
+import { User } from "./user.mjs";
 
 const Schema = mongoose.Schema;
 const campgroundSchema = new Schema({
@@ -18,9 +19,17 @@ const campgroundSchema = new Schema({
   number: {
     type: Number,
   },
-  img: {
-    type: String,
+  imgs: [
+    {
+      url: String,
+      filename: String,
+    },
+  ],
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
+
   reviews: [
     {
       type: Schema.Types.ObjectId,

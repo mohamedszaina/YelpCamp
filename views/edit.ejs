@@ -3,9 +3,9 @@
 <div class="row">
   <div class="col-8 offset-2">
     <form
-      action="/campground/<%=idEditCampground._id%>/edit?_method=PUT"
+      action="/campground/<%=campground._id%>?_method=PUT"
       method="post"
-      class="needs-validation"
+      class="d-inline needs-validation"
       novalidate
     >
       <div class="mb-3">
@@ -15,7 +15,7 @@
           type="text"
           id="title"
           name="campground[title]"
-          value="<%= idEditCampground.title %>"
+          value="<%= campground.title %>"
           required
         />
         <div class="valid-feedback">Looks good!</div>
@@ -29,7 +29,7 @@
           type="text"
           id="location"
           name="campground[location]"
-          value="<%= idEditCampground.location %>"
+          value="<%= campground.location %>"
           required
         />
         <div class="valid-feedback">Looks good!</div>
@@ -45,7 +45,7 @@
           type="text"
           id="price"
           name="campground[price]"
-          value="<%= idEditCampground.price %>"
+          value="<%= campground.price %>"
           aria-label="Amount (to the nearest dollar)"
           required
         />
@@ -62,7 +62,7 @@
           type="text"
           id="img"
           name="campground[img]"
-          value="https://<%= idEditCampground.img %>"
+          value="<%= campground.img %>"
           required
         />
         <div class="valid-feedback">Looks good!</div>
@@ -79,7 +79,7 @@
           rows="3"
           required
         >
-<%= idEditCampground.description %></textarea
+<%= campground.description %></textarea
         >
         <div class="valid-feedback">Looks good!</div>
         <div class="invalid-feedback">
@@ -90,11 +90,11 @@
     </form>
     <form
       class="d-inline"
-      action="/campground/<%= idEditCampground._id %>/delete?_method=DELETE"
+      action="/campground/<%= campground._id %>?_method=DELETE"
       method="post"
     >
       <button class="btn btn-danger">Delete</button>
-      <a href="/" class="btn btn-primary">Cancel</a>
     </form>
+    <a href="/" class="btn btn-primary">Cancel</a>
   </div>
 </div>

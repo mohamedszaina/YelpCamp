@@ -18,6 +18,8 @@ const seeedDB = async () => {
     const randomCities = Math.floor(Math.random() * 1000);
     const price = Math.floor(Math.random() * 20) + 10;
     const n = new Campground({
+      author: "631718efe90897369a87d16d",
+      title: "Somewhere in there",
       location: `${cities[randomCities].city} - ${cities[randomCities].city}`,
       number: `${i}`,
       img: "https://source.unsplash.com/collection/483251",

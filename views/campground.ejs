@@ -4,11 +4,13 @@
 <div class="card mb-3">
   <div class="row g-0">
     <div class="col-md-4">
+      <% for(let img of campground.imgs ){ %>
       <img
-        src="<%= campground.img %>"
+        src="<%= img.url %>"
         class="img-fluid rounded-start"
         alt="<%= campground.location %>"
       />
+      <% } %>
     </div>
     <div class="col-md-8">
       <div class="card-body">
@@ -22,5 +24,3 @@
   </div>
 </div>
 <% } %>
-<a href="/">Home</a>
-<a href="/campground/new">Add campground</a>

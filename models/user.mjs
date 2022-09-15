@@ -1,0 +1,13 @@
+import mongoose from "mongoose";
+import passportLocalMongoose from "passport-local-mongoose";
+
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+});
+//the passport-local-mongoose will add username, hash password and salt password behind the scenes
+userSchema.plugin(passportLocalMongoose);
+export const User = mongoose.model("User", userSchema);

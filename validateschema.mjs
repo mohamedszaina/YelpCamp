@@ -7,7 +7,10 @@ export const joiCampgroundSchema = joi.object({
       price: joi.number().required().min(0),
       description: joi.string().required(),
       location: joi.string().required(),
-      img: joi.string().required(),
+      // imgs: joi.object({
+      //   url: joi.string().required(),
+      //   filename: joi.string().required(),
+      // }),
     })
     .required(),
 });
