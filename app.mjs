@@ -31,7 +31,7 @@ import helmet from "helmet";
 import MongoStore from "connect-mongo";
 
 const app = express();
-const port = 3000 ?? process.env.port;
+const port = 3000 ?? process.env.PORT;
 const message = () => {
   console.log(`Serving at http://localhost:${port}`);
 };
