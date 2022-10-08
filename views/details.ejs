@@ -2,38 +2,72 @@
 <link rel="stylesheet" href="/stylesheets/star.css" />
 <div class="row">
   <div class="col-6">
-    <div class="card mb-3">
-      <% for(let img of campground.imgs ){ %>
-      <img
-        src="<%= img.url %>"
-        class="card-img-top"
-        alt="<%= img.filename %> "
-      />
+    <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <% campground.imgs.forEach((img,i) => { %>
+        <div
+          class="carousel-item <%= i === 0?'active':'' %>"
+          data-bs-interval="3000"
+        >
+          <img
+            src="<%= img.url %>"
+            class="d-block w-100"
+            alt="<%= img.filename %> "
+            crossorigin
+          />
+        </div>
+        <% }) %>
+      </div>
+      <% if(campground.imgs.length > 1){ %>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#campgroundCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#campgroundCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
       <% } %>
-      <div class="card-body">
-        <h5 class="card-title"><%= campground.location %></h5>
+    </div>
 
-        <p class="card-text"><%= campground.description %></p>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title"><%= campground.title%></h5>
+        <p class="card-text"><%= campground.description%></p>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item text-muted">
-          <%= campground.title %>
-          <b> by: <%= campground.author.username %> </b>
+        <li class="list-group-item text-muted"><%= campground.location%></li>
+        <li class="list-group-item">
+          Submitted by <%= campground.author.username%>
         </li>
-        <li class="list-group-item">$<%= campground.price %>/night</li>
+        <li class="list-group-item">$<%= campground.price%>/night</li>
       </ul>
-      <div class="card-body">
-        <a class="card-link btn btn-primary" href="/campground">Campgrounds</a>
-        <% if(currentUser && campground.author.equals(currentUser._id)){ %>
-        <a
-          class="card-link btn btn-primary"
-          href="/campground/<%= campground._id %>/edit"
-          >Edit</a
-        ><% } %>
-      </div>
+
+      <div class="card-footer text-muted">2 days ago</div>
+    </div>
+    <div class="card-body mb-3">
+      <a class="card-link btn btn-primary" href="/campground">Campgrounds</a>
+      <% if(currentUser && campground.author.equals(currentUser._id)){ %>
+      <a
+        class="card-link btn btn-primary"
+        href="/campground/<%= campground._id %>/edit"
+        >Edit</a
+      ><% } %>
     </div>
   </div>
+
   <div class="col-6">
+    <div id="map"></div>
     <% if(currentUser){ %>
     <div class="mb-3">
       <h2>Leave a Review</h2>
@@ -138,3 +172,14 @@
     </div>
   </div>
 </div>
+<script>
+    const mapToken = "<%-process.env.MAPBOX_TOKEN%>";
+    const campground = <%- JSON.stringify(campground) %>;
+
+  // 1) then please make sure that in you showMapPage.js file vs code is not adding an additional require statement on its own. Remove it if does.
+
+  // 2) Turn off the auto formatting by vs code and ignore if vs code tells you there are 4 errors in the show.ejs file. Just follow what Colt did!
+
+  // 3) Make sure your campground.geometry.coordinates array is not empty. This was the issue I was facing. I didn't face any issue in the above three points and still my map was not visible. Turns out when I make a new campground it was showing the map and on the already existing ones it was not. So I fixed my seeds.
+</script>
+<script src="/js/showPageMap.mjs"></script>

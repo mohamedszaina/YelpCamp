@@ -5,6 +5,7 @@ export const renderRegisterForm = (req, res) => {
   });
 };
 export const creatUser = async (req, res) => {
+  // Handling the errors that might comes in the user registration controller
   try {
     const { username, email, password } = req.body;
     const newUser = new User({ username, email });
